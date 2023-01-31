@@ -4,7 +4,7 @@ public class MyPets {
 
         Pet[] allPets = {
                 new Pet("Rafael", 2, Type.Rat),
-                new Pet("Hammy", 4, Type.Hamster),
+                new Pet("Hammy", 1, Type.Hamster),
                 new Pet("Fabio", 1, Type.Ferret),
                 new Pet("Franky", 7, Type.Rabbit),
         };
