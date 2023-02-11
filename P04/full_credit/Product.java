@@ -14,11 +14,15 @@ abstract class Product{
 
     @Override
     public String toString(){
-        String formattedcost = String.format("%.2f", cost);
-        String formattedPrice = String.format("%.2f", Price());
-        String s1 = name + " " + "($" + formattedcost + ")\t\t$ " + formattedPrice;
+        // String formattedcost = String.format("%.2f", cost);
+        // String formattedPrice = String.format("%.2f", Price());
+        //String s1 = name + " " + "($" + formattedcost + ") $ " + formattedPrice;
        // String s2 = ")$ " + formattedPrice;
-        String s3 = String.format("%15s", s1);
-        return s3;
+
+        String prod = String.format("%s ($%.2f)", name, cost);
+        String price = String.format("$%.2f", Price());
+        //return s3;
+
+        return String.format("%-24s %10s", prod, price);
         }
 }

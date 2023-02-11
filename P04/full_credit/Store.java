@@ -15,8 +15,8 @@ public class Store {
         Products.add(new Taxfree("Bread", 3.99));
         Products.add(new Taxed("Chicen", 5.49));
         Products.add(new Taxed("Popcorn", 5.99));
-        Products.add(new Taxed("Cookies", 2.99));
-        Products.add(new Taxed("Sponge", 2.99));
+        Products.add(new Taxed("Sponges", 2.99));
+        Products.add(new Taxed("Chocolate", 2.99));
         
         Scanner input = new Scanner(System.in);
         
@@ -52,8 +52,8 @@ public class Store {
 
                 }
             } 
-            catch (ArrayIndexOutOfBoundsException e) {
-               System.err.println("input cannot be negative");
+            catch (IndexOutOfBoundsException e) {
+               System.err.println("input cannot be greater than the number of products");
             }
             catch (Exception e) {
                 System.err.println("error: " + e.getMessage());
