@@ -13,7 +13,7 @@ public class Store {
         Products.add(new Taxfree("Butter", 2.49));
         Products.add(new Taxfree("Fruit", 1.49));
         Products.add(new Taxfree("Bread", 3.99));
-        Products.add(new Taxed("Chicen", 5.49));
+        Products.add(new Taxed("Chicken", 5.49));
         Products.add(new Taxed("Popcorn", 5.99));
         Products.add(new Taxed("Sponges", 2.99));
         Products.add(new Taxed("Chocolate", 2.99));
