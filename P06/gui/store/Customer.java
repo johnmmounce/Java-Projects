@@ -15,6 +15,7 @@ public class Customer {
             throw new IllegalArgumentException("invalid email (email must have '.' after '@')");
         }
     }
+
     @Override
     public String toString() {
         return name + " (" + email + ") ";

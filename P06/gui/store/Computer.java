@@ -24,10 +24,12 @@ public class Computer {
         }
         return sum;
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(name + " (" + model + "}");
-        for(Option o : options) sb.append("\n  " + o);
+        for (Option o : options)
+            sb.append("\n  " + o);
         return sb.toString();
     }
 

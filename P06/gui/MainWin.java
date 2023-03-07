@@ -61,12 +61,12 @@ public class MainWin extends JFrame {
 
         // Make everything in the JFrame visible
         this.pack();
-        //this.setSize(200,200);
+        // this.setSize(200,200);
         this.setVisible(true);
     }
 
     private void addMenu() {
-         // /////// ////////////////////////////////////////////////////////////////
+        // /////// ////////////////////////////////////////////////////////////////
         // M E N U
         // Add a menu bar to the PAGE_START area of the Border Layout
 
@@ -120,7 +120,7 @@ public class MainWin extends JFrame {
         // Add a toolbar to the PAGE_START region below the menu
         JToolBar toolbar = new JToolBar("ELSA Controls");
         // A "horizontal strut" is just a space of the specified pixel width
-        //toolbar.add(Box.createHorizontalStrut(25));
+        // toolbar.add(Box.createHorizontalStrut(25));
 
         final int tbButtonWidth = 60;
         final int tbButtonWHeight = 60;
@@ -175,19 +175,12 @@ public class MainWin extends JFrame {
 
     private ImageIcon resizeImage(String path, int newWidth, int newHeight) {
         ImageIcon icon = new ImageIcon(path);
-        Image img = icon.getImage() ;  
-        Image newimg = img.getScaledInstance( newWidth, newHeight, java.awt.Image.SCALE_SMOOTH ) ;  
-        return new ImageIcon( newimg );
+        Image img = icon.getImage();
+        Image newimg = img.getScaledInstance(newWidth, newHeight, java.awt.Image.SCALE_SMOOTH);
+        return new ImageIcon(newimg);
     }
 
     // // Listeners
-
-    protected void onNewGameClick() { // Create a new game
-        // Nim nim = new Nim();
-        // nim.setSticks();
-        msg.setFont(new JLabel("test").getFont()); // Reset to default font
-    }
-
     protected void onAboutClick() { // Display About dialog
         JDialog about = new JDialog();
         about.setLayout(new FlowLayout());
@@ -200,7 +193,7 @@ public class MainWin extends JFrame {
 
     protected void onQuitClick() {
         System.exit(0);
-    } 
+    }
 
     protected void onInsertCustomerClick() {
         String name = JOptionPane.showInputDialog(null, "Customer name", "New Customer", JOptionPane.PLAIN_MESSAGE);
@@ -249,13 +242,16 @@ public class MainWin extends JFrame {
     protected void onViewClick(Record record) {
         Object[] viewArray = null;
 
-        if (this.optionsContent != null) this.remove(this.optionsContent);
-        if (this.computerContent != null) this.remove(this.computerContent);
-        if (this.customerContent != null) this.remove(this.customerContent);
+        if (this.optionsContent != null)
+            this.remove(this.optionsContent);
+        if (this.computerContent != null)
+            this.remove(this.computerContent);
+        if (this.customerContent != null)
+            this.remove(this.customerContent);
 
         if (record.equals(Record.CUSTOMER)) {
             this.customerContent = new JPanel();
-            customerContent.setLayout(new BoxLayout(customerContent, BoxLayout .Y_AXIS));
+            customerContent.setLayout(new BoxLayout(customerContent, BoxLayout.Y_AXIS));
 
             JLabel customers = new JLabel("Customers");
             customers.setFont(new Font("SansSerif", Font.BOLD, 18));
@@ -263,46 +259,46 @@ public class MainWin extends JFrame {
             this.customerContent.add(customers, BorderLayout.PAGE_START);
             viewArray = store.customers();
             for (int i = 0; i < viewArray.length; i++) {
-               
-                customerContent.add(new JLabel(i+1 + ". " + viewArray[i].toString()));
+
+                customerContent.add(new JLabel(i + 1 + ". " + viewArray[i].toString()));
             }
-           
+
             this.add(this.customerContent, BorderLayout.CENTER);
             this.setVisible(true);
         } else if (record.equals(Record.OPTION)) {
             this.optionsContent = new JPanel();
-            optionsContent.setLayout(new BoxLayout(optionsContent, BoxLayout .Y_AXIS));
+            optionsContent.setLayout(new BoxLayout(optionsContent, BoxLayout.Y_AXIS));
 
             JLabel options = new JLabel("Options");
             options.setFont(new Font("SansSerif", Font.BOLD, 18));
-            
+
             this.optionsContent.add(options, BorderLayout.PAGE_START);
             viewArray = store.options();
             for (int i = 0; i < viewArray.length; i++) {
-               
-                optionsContent.add(new JLabel(i+1 + ". " + viewArray[i].toString()));   
+
+                optionsContent.add(new JLabel(i + 1 + ". " + viewArray[i].toString()));
             }
-           
+
             this.add(this.optionsContent, BorderLayout.CENTER);
             this.setVisible(true);
         } else if (record.equals(Record.COMPUTER)) {
             this.computerContent = new JPanel();
-            computerContent.setLayout(new BoxLayout(computerContent, BoxLayout .Y_AXIS));
+            computerContent.setLayout(new BoxLayout(computerContent, BoxLayout.Y_AXIS));
 
             JLabel computers = new JLabel("Computers for sale - cheap!");
             computers.setFont(new Font("SansSerif", Font.BOLD, 18));
-            
+
             this.computerContent.add(computers, BorderLayout.PAGE_START);
             viewArray = store.computers();
             for (int i = 0; i < viewArray.length; i++) {
-               
-                computerContent.add(new JLabel(i+1 + ". " + viewArray[i].toString()));
-                
+
+                computerContent.add(new JLabel(i + 1 + ". " + viewArray[i].toString()));
+
             }
-           
+
             this.add(this.computerContent, BorderLayout.CENTER);
             this.setVisible(true);
-        }else {
+        } else {
             JOptionPane.showMessageDialog(null, "invalid record type");
         }
     }
@@ -310,7 +306,7 @@ public class MainWin extends JFrame {
     private Store store;
 
     private JLabel msg; // Status message display
-    
+
     private JButton button1; // Button to select 1 stick
     private JButton button2; // Button to select 2 sticks
     private JButton button3; // Button to select 3 sticks
