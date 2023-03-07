@@ -10,11 +10,12 @@ public class Customer {
 
         int atIndex = email.indexOf("@");
         if (atIndex != -1 && email.indexOf(".", atIndex) != -1) {
+            this.email = email;
         } else {
-            throw new IllegalArgumentException("invalid email(email must have '.' after '@'");
+            throw new IllegalArgumentException("invalid email (email must have '.' after '@')");
         }
     }
-
+    @Override
     public String toString() {
         return name + " (" + email + ") ";
     }

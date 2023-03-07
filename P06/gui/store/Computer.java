@@ -24,19 +24,11 @@ public class Computer {
         }
         return sum;
     }
-
+    @Override
     public String toString() {
-        StringBuilder string = new StringBuilder();
-        string.append(name);
-        string.append(" (");
-        string.append(")\n");
-        for (Option i : options) {
-            string.append("   ");
-            string.append("(");
-            string.append(i.toString());
-            string.append("\n");
-        }
-        return string.toString();
+        StringBuilder sb = new StringBuilder(name + " (" + model + "}");
+        for(Option o : options) sb.append("\n  " + o);
+        return sb.toString();
     }
 
     public boolean equals(Object o) {
