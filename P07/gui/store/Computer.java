@@ -1,4 +1,14 @@
-package store;
+package gui.store;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 import java.util.ArrayList;
 
@@ -6,6 +16,25 @@ public class Computer {
     private String name;
     private String model;
     private ArrayList<Option> options;
+
+    public void save(BufferedWriter bw) throws IOException{
+        bw.write( name + "\n");
+        bw.write( model + "\n");
+        bw.write( "" + options.size() + "\n");
+        for(Option option : options){
+            option.save(bw);
+        }
+ 
+     }
+ 
+     public Computer(BufferedReader br) throws IOException{
+         this.name = br.readLine();
+         this.model = br.readLine();
+         int size = Integer.parseInt(br.readLine());
+         while(size-- > 0){
+             options.add(new Option(br));
+         }
+     }
 
     public Computer(String name, String model) {
         this.name = name;
