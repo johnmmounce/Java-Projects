@@ -45,7 +45,6 @@ import javax.swing.JList; // useful values for Swing method calls
 import javax.imageio.ImageIO; // loads an image from a file
 
 import java.io.File; // opens a file
-
 import java.awt.BorderLayout; // layout manager for main window
 import java.awt.FlowLayout; // layout manager for About dialog
 

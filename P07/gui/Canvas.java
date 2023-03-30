@@ -16,6 +16,7 @@ public class Canvas extends JPanel {
     
         int x = (getWidth() - 90) / 2;  
         int y = (getHeight() - 90) / 2; 
+    
         g.drawRect(x, y, 90, 90);                   
     }  
 }
