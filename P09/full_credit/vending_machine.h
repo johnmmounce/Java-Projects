@@ -9,11 +9,13 @@
 class Vending_Machine
 {
 public:
-    std::vector<Item> items;
 
     int add(std::string name, int price);
     int buy(int index);
     std::string menu();
+
+private:
+    std::vector<Item> items;
 };
 
 #endif

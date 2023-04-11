@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <iomanip>
 #include "item.h"
 #include "vending_machine.h"
 
@@ -23,6 +24,6 @@
         {
             menu += items[i].to_string();
         }
-        std::cout << menu << std::endl;
+        std::cout << std::fixed << std::setprecision(2) <<  menu << std::endl;
         return menu;
     }
