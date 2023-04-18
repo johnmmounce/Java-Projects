@@ -48,7 +48,7 @@ public class Order {
     }
 @Override
 public String toString() {
-    StringBuilder sb = new StringBuilder("Order " + orderNumber + " for " + customer + " price of $" + cost());
+    StringBuilder sb = new StringBuilder("Order " + orderNumber + " for " + customer + " price of $" + cost() + ";");
     for(Computer c : computers){
         sb.append("\n\n" + c);
     }

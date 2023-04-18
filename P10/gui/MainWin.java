@@ -32,12 +32,14 @@ import javax.swing.JMenuItem; // menu selection that does something
 import javax.swing.JToolBar; // row of buttons under the menu
 import javax.swing.JButton; // regular button
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JToggleButton; // 2-state button
 import javax.swing.BorderFactory; // manufacturers Border objects around buttons
 import javax.swing.Box; // to create toolbar spacer
 import javax.swing.BoxLayout;
 import javax.swing.UIManager; // to access default icons
 import javax.swing.plaf.DimensionUIResource;
+import javax.swing.plaf.LabelUI;
 import javax.swing.JLabel; // text or image holder
 import javax.swing.ImageIcon; // holds a custom icon
 import javax.swing.SwingConstants; // useful values for Swing method calls
@@ -99,6 +101,7 @@ public class MainWin extends JFrame {
         JMenuItem customer = new JMenuItem("Customer");
         JMenuItem option = new JMenuItem("Option");
         JMenuItem computer = new JMenuItem("Computer");
+        JMenuItem order = new JMenuItem("Order");
 
         JMenu view = new JMenu("View");
         JMenuItem customers = new JMenuItem("Customers");
@@ -119,6 +122,7 @@ public class MainWin extends JFrame {
         customer.addActionListener(event -> onInsertCustomerClick());
         option.addActionListener(event -> onInsertOptionClick());
         computer.addActionListener(event -> onInsertComputerClick());
+        order.addActionListener(event -> onInsertOrderClick());
 
         customers.addActionListener(event -> onViewClick(Record.CUSTOMER));
         options.addActionListener(event -> onViewClick(Record.OPTION));
@@ -135,6 +139,7 @@ public class MainWin extends JFrame {
         insert.add(customer);
         insert.add(option);
         insert.add(computer);
+        insert.add(order);
 
         view.add(customers);
         view.add(options);
@@ -190,50 +195,56 @@ public class MainWin extends JFrame {
 
         // button inserts/view
         addCustomerButton = new JButton(resizeImage("gui/addCustomer.png", tbButtonWidth, tbButtonWHeight));
-        addCustomerButton.setActionCommand("Add customer");
-        addCustomerButton.setToolTipText("Add customer");
+        addCustomerButton.setActionCommand("Add Customer");
+        addCustomerButton.setToolTipText("Add Customer");
         toolbar.add(addCustomerButton);
         addCustomerButton.addActionListener(event -> onInsertCustomerClick());
 
         // button2 = new JButton(new ImageIcon("addOption.png"));
         addOptionButton = new JButton(resizeImage("gui/addOption.png", tbButtonWidth, tbButtonWHeight));
-        addOptionButton.setActionCommand("Add option");
-        addOptionButton.setToolTipText("Add option");
+        addOptionButton.setActionCommand("Add Option");
+        addOptionButton.setToolTipText("Add Option");
         toolbar.add(addOptionButton);
         addOptionButton.addActionListener(event -> onInsertOptionClick());
 
         addComputerButton = new JButton(resizeImage("gui/addComputer.png", tbButtonWidth, tbButtonWHeight));
-        addComputerButton.setActionCommand("Add computer");
-        addComputerButton.setToolTipText("Add computer");
+        addComputerButton.setActionCommand("Add Computer");
+        addComputerButton.setToolTipText("Add Computer");
         toolbar.add(addComputerButton);
         addComputerButton.addActionListener(event -> onInsertComputerClick());
+
+        addOrderButton = new JButton(resizeImage("gui/addOrder.png", tbButtonWidth, tbButtonWHeight));
+        addOrderButton.setActionCommand("Add Order");
+        addOrderButton.setToolTipText("Add Order");
+        toolbar.add(addOrderButton);
+        addOrderButton.addActionListener(event -> onInsertOrderClick());
 
         // seperator between button sets
         toolbar.add(Box.createHorizontalStrut(25));
 
         viewCustomerButton = new JButton(resizeImage("gui/viewCustomers.png", tbButtonWidth, tbButtonWHeight));
-        viewCustomerButton.setActionCommand("View customers");
-        viewCustomerButton.setToolTipText("View customers");
+        viewCustomerButton.setActionCommand("View Customers");
+        viewCustomerButton.setToolTipText("View Customers");
         toolbar.add(viewCustomerButton);
         viewCustomerButton.addActionListener(event -> onViewClick(Record.CUSTOMER));
 
         viewOptionsButtton = new JButton(resizeImage("gui/viewOptions.png", tbButtonWidth, tbButtonWHeight));
-        viewOptionsButtton.setActionCommand("View options");
-        viewOptionsButtton.setToolTipText("View options");
+        viewOptionsButtton.setActionCommand("View Options");
+        viewOptionsButtton.setToolTipText("View Options");
         toolbar.add(viewOptionsButtton);
         viewOptionsButtton.addActionListener(event -> onViewClick(Record.OPTION));
 
-        viewOrdersButtton = new JButton(resizeImage("gui/viewOptions.png", tbButtonWidth, tbButtonWHeight));
-        viewOrdersButtton.setActionCommand("View options");
-        viewOrdersButtton.setToolTipText("View options");
-        toolbar.add(viewOrdersButtton);
-        viewOrdersButtton.addActionListener(event -> onViewClick(Record.ORDER));
-
         viewComputersButton = new JButton(resizeImage("gui/viewComputers.png", tbButtonWidth, tbButtonWHeight));
-        viewComputersButton.setActionCommand("View computers");
-        viewComputersButton.setToolTipText("View computers");
+        viewComputersButton.setActionCommand("View Computers");
+        viewComputersButton.setToolTipText("View Computers");
         toolbar.add(viewComputersButton);
         viewComputersButton.addActionListener(event -> onViewClick(Record.COMPUTER));
+
+        viewOrdersButtton = new JButton(resizeImage("gui/viewOrders.png", tbButtonWidth, tbButtonWHeight));
+        viewOrdersButtton.setActionCommand("View Orders");
+        viewOrdersButtton.setToolTipText("View Orders");
+        toolbar.add(viewOrdersButtton);
+        viewOrdersButtton.addActionListener(event -> onViewClick(Record.ORDER));
 
         // "Horizontal glue" expands as much as possible, pushing the "X" to the right
         toolbar.add(Box.createHorizontalGlue());
@@ -456,6 +467,53 @@ public class MainWin extends JFrame {
 
     }
 
+    protected void onInsertOrderClick() {
+        Customer customer = null;
+        if (store.customers().length == 0) {
+            onInsertCustomerClick();
+        } else if (store.customers().length == 1) {
+            customer = (Customer) store.customers()[0];
+        } else {
+            JComboBox<Object> jcbCustomers = new JComboBox<>(store.customers());
+            int result = JOptionPane.showOptionDialog(null, jcbCustomers, "Order for which Customer?",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+            // Get the selected item from the JComboBox
+            if (result == JOptionPane.OK_OPTION) {
+                customer = (Customer) store.customers()[jcbCustomers.getSelectedIndex()];
+            }
+        }
+        Order newOrder = new Order(customer);
+        int orderCounter = 0;
+        Computer computer;
+        while(true){
+
+            JComboBox jcbComputers = new JComboBox<>(store.computers());
+            jcbComputers.addItem("place order");
+            JComponent[] cart = new JComponent[] {
+                jcbComputers
+            };
+
+            int selection = JOptionPane.showOptionDialog(null, jcbComputers,"Current Order", 
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+            if(selection == JOptionPane.OK_OPTION){
+                if(jcbComputers.getSelectedItem() == "place order"){
+                    store.add(newOrder);
+                    break;
+                }
+                else{
+                    computer = (Computer) store.computers()[jcbComputers.getSelectedIndex()];
+                newOrder.addComputer(computer);
+                ++orderCounter;
+                }
+            }
+            else{
+                break;
+            }
+            }
+
+    }
+
     protected void onViewClick(Record record) {
         Object[] viewArray = null;
 
@@ -517,7 +575,7 @@ public class MainWin extends JFrame {
 
             this.add(this.computerContent, BorderLayout.CENTER);
             this.setVisible(true);
-        } else if(record.equals(Record.ORDER)){
+        } else if (record.equals(Record.ORDER)) {
             this.orderContent = new JPanel();
             orderContent.setLayout(new BoxLayout(orderContent, BoxLayout.Y_AXIS));
 
@@ -534,7 +592,7 @@ public class MainWin extends JFrame {
 
             this.add(this.orderContent, BorderLayout.CENTER);
             this.setVisible(true);
-        }else {
+        } else {
             JOptionPane.showMessageDialog(null, "invalid record type");
         }
     }
@@ -553,10 +611,13 @@ public class MainWin extends JFrame {
     private JButton addCustomerButton;
     private JButton addOptionButton;
     private JButton addComputerButton;
+    private JButton addOrderButton;
+
     private JButton viewCustomerButton;
     private JButton viewOptionsButtton;
     private JButton viewComputersButton;
     private JButton viewOrdersButtton;
+
     private JButton newFileButton;
     private JButton openFileButton;
     private JButton saveButton;
