@@ -13,6 +13,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame; // for main window
 import javax.swing.JOptionPane; // for standard dialogs
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -56,6 +57,8 @@ import java.awt.Font; // rich text in a JLabel or similar widget
 import java.awt.Image;
 import java.awt.image.BufferedImage; // holds an image loaded from a file
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
 
 public class MainWin extends JFrame {
     public MainWin(String title) {
@@ -316,8 +319,11 @@ public class MainWin extends JFrame {
                 + "<br/><p> View options icon based on work by bqlqn per the Flaticon License</p>"
                 + "<p><font size =-2>https://www.flaticon.com/free-icon/menu_2948037?term=options&page=1&position=31&origin=search&related_id=2948037</font><p>"
 
-                + "<br/><p> View computers icon based on work by Freepik per the Flaticon License</p>"
-                + "<p><font size =-2>https://www.flaticon.com/free-icon/multiple-computers-connected_70930?term=multiple+computers&page=1&position=5&origin=search&related_id=70930</font><p>"
+                + "<br/><p> View orders icon based on work by Freepik per the Flaticon License</p>"
+                + "<p><font size =-2>https://www.flaticon.com/free-icons/paper-clip</font><p>"
+               
+                + "<br/><p> add order icon based on work by Freepik per the Flaticon License</p>"
+                + "<p><font size =-2>https://www.flaticon.com/free-icons/add-to-cart</font><p>"
 
                 + "<html>");
         about.add(credits);
@@ -410,26 +416,61 @@ public class MainWin extends JFrame {
     }
 
     protected void onInsertCustomerClick() {
-        String name = JOptionPane.showInputDialog(this, "Customer name", "New Customer", JOptionPane.QUESTION_MESSAGE);
-        String email = JOptionPane.showInputDialog(this, "Customer email", "New Customer",
-                JOptionPane.QUESTION_MESSAGE);
+        String[] fields = {"Name:", "Email:"};
+            String title = "New Customer";
+            String iconFilename = "gui/addCustomer.png";
+        resizeImage(iconFilename, 40, 40);
+
+
+            String [] nameEmail = UnifiedDialog(fields, title, iconFilename);
+            String name = nameEmail[0];
+            String email = nameEmail[1];
         try {
             Customer customer = new Customer(name, email);
             store.add(customer);
             setDirty(true);
             onViewClick(Record.CUSTOMER);
+            
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(null, e.getMessage(), "invalid email", JOptionPane.ERROR_MESSAGE);
         }
     }
 
+String[] UnifiedDialog(String[] fields, String title, String iconFilename){
+    ImageIcon image = new ImageIcon(iconFilename);
+       image =  resizeImage(iconFilename, 50, 50);
+    Object[] message = new Object[fields.length * 2];
+    for (int i = 0; i < fields.length; i++) {
+        message[i * 2] = new JLabel(fields[i]); 
+        message[i * 2 + 1] = new JTextField(20); 
+   
+   int result = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, image);
+
+   
+   if (result == JOptionPane.OK_OPTION) {
+       String[] input = new String[fields.length];
+       for (int i = 0; i < fields.length; i++) {
+           input[i] = ((JTextField) message[i * 2 + 1]).getText(); 
+       }
+       return input;
+   } else {
+       return null;
+   }
+    
+}
+
     protected void onInsertOptionClick() {
+        String[] fields = {"Option Name", "Option Price"};
+        String title = "New Option";
+        String iconFilename = "gui/addOption.png";
+        resizeImage(iconFilename, 40, 40);
+
+        String [] optionPrice = UnifiedDialog(fields, title, iconFilename);
+        String  optionName = optionPrice[0];
+        long price = Long.parseLong(optionPrice[1]) * 100;
+        
         try {
-            store.add(new Option(
-                    JOptionPane.showInputDialog(this, "Option name", "New Option", JOptionPane.QUESTION_MESSAGE),
-                    (long) (100.0 * Double.parseDouble(
-                            JOptionPane.showInputDialog(this, "Option cost", "New Option",
-                                    JOptionPane.QUESTION_MESSAGE)))));
+            store.add(new Option(optionName, price));
             setDirty(true);
             onViewClick(Record.OPTION);
         } catch (NullPointerException e) {
@@ -439,12 +480,16 @@ public class MainWin extends JFrame {
     }
 
     protected void onInsertComputerClick() {
+        String[] fields = {"Computer Name:", "Computer Model:"};
+        String title = "New Computer";
+        String iconFilename = "gui/addComputer.png";
+        resizeImage(iconFilename, 40, 40);
+
+        String [] nameModel = UnifiedDialog(fields, title, iconFilename);
+        String computerName = nameModel[0];
+        String computerModel = nameModel[1];
         try {
-            Computer c = new Computer(
-                    JOptionPane.showInputDialog(this, "Computer name",
-                            "New Computer", JOptionPane.QUESTION_MESSAGE),
-                    JOptionPane.showInputDialog(this, "Computer model",
-                            "New Computer", JOptionPane.QUESTION_MESSAGE));
+            Computer c = new Computer(computerName, computerModel);
             JComboBox<Object> cb = new JComboBox<>(store.options());
             int optionsAdded = 0; // Don't add computers with no options
             while (true) {
@@ -637,5 +682,8 @@ public class MainWin extends JFrame {
     private JPanel customerContent;
     private JPanel orderContent;
     private File filename;
+
+    private ImageIcon addCustomerIcon = new ImageIcon("gui/addCustomer.png");
+    private ImageIcon addOptionIcon = new ImageIcon("gui/addOption.png");
 
 }
